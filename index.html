@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BankList</title>
+    <style>
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+      }
+    </style>
+    <link rel="stylesheet" href="./src/css/app.css"/>
+  </head>
+  <body class="bg-zinc-200 h-screen select-none">
+    <div id="app"></div>
+    <!--               Header               -->
+    <nav class="flex justify-between mt-8 px-20 headertbl">
+      <!--Text Log in to Start-->
+      <div class="relative flex">
+        <div class="z-10">
+          <p
+            class="text-black font-bold text-2xl flex items-center justify-center label__welcome"
+          >
+            Login to Get Started
+          </p>
+        </div>
+        <div
+          class="w-20 h-12 bottom-2 bg-sky-600/40 -left-1 absolute rounded-full -mx-2 blue__Login"
+        ></div>
+      </div>
+      <!--Icon-->
+      <div>
+        <img class="w-18 h-18 header__icon" src="/public/atomIcon.png" alt="Mark" />
+      </div>
+      <!--Mother of   User , Pin , Flesh Icon-->
+      <form class="flex gap-3 login header__form">
+        <!--Input User-->
+        <input
+          class="text-black text-center placeholder:slate-400 text-lg  bg-white w-32 rounded-full h-10 focus:outline-none input__user"
+          type="text"
+          placeholder="User"
+        />
+
+        <!--Input Pin-->
+        <input
+          class="text-black text-center placeholder:slate-400 bg-white text-lg w-32 h-10 rounded-full  focus:outline-none input__pin"
+          type="text"
+          placeholder="Pin"
+        />
+        <!--Button Flesh Icon-->
+        <button class="mb-2 button__login">
+          <img class="w-6 h-6" src="/public/ArrowIcon.png" alt="Arrow" />
+        </button>
+      </form>
+    </nav>
+    <!--                Modal When Don't have enough monye        -->
+    <div class="bg-black top-0 left-0 right-0 flex flex-col justify-center bg-opacity-50 h-screen w-screen fixed items-center hidden index__modal">
+        <div class="bg-white flex flex-col gap-2 rounded-lg relative" style="width: 600px;">
+            <div class="flex flex-col pl-28 pb-8 pt-8 gap-3">
+              <p class="text-3xl font-bold text-red-500">
+              Error
+            </p>
+              <p class="text-lg font-serif text-gray-700">
+                Your account doesn't support this amount of Money
+              </p>
+              <div class="absolute left-4 top-7">
+                <img class="w-16 h-16" src="./public/errorIcon.png" alt="Error">
+              </div>
+            </div>
+            <div class="bg-slate-100 flex justify-end items-end rounded-lg">
+              <button class="font-serif text-xl text-gray-700 bg-white px-6 py-1 rounded-md mb-3 mt-3 mr-3 btn__modal">
+                Canel
+            </button>
+          </div>
+        </div>
+    </div>
+
+    <!--                Modal When Account doesn't exist        -->
+    <div class="bg-black top-0 left-0 right-0 flex flex-col justify-center bg-opacity-50 h-screen w-screen fixed items-center hidden index__modal__exist">
+      <div class="bg-white flex flex-col gap-2 rounded-lg relative" style="width: 600px;">
+          <div class="flex flex-col pl-28 pb-8 pt-8 gap-3">
+            <p class="text-3xl font-bold text-red-500">
+            Error
+          </p>
+            <p class="text-lg font-serif text-gray-700">
+              Account doesn't exist
+            </p>
+            <div class="absolute left-4 top-7">
+              <img class="w-16 h-16" src="./public/errorIcon.png" alt="Error">
+            </div>
+          </div>
+          <div class="bg-slate-100 flex justify-end items-end rounded-lg">
+            <button class="font-serif text-xl text-gray-700 bg-white px-6 py-1 rounded-md mb-3 mt-3 mr-3 btn__modal__exist">
+              Canel
+          </button>
+        </div>
+      </div>
+  </div>
+
+  <!--                Modal When you can't tranfer money to your curren't accoun't        -->
+  <div class="bg-black top-0 left-0 right-0 flex flex-col justify-center bg-opacity-50 h-screen w-screen fixed items-center hidden index__modal__currentAccount">
+    <div class="bg-white flex flex-col gap-2 rounded-lg relative" style="width: 600px;">
+        <div class="flex flex-col pl-28 pb-8 pt-8 gap-3">
+          <p class="text-3xl font-bold text-red-500">
+          Error
+        </p>
+          <p class="text-lg font-serif text-gray-700">
+            You can't tranfer money to your curren't account
+          </p>
+          <div class="absolute left-4 top-7">
+            <img class="w-16 h-16" src="./public/errorIcon.png" alt="Error">
+          </div>
+        </div>
+        <div class="bg-slate-100 flex justify-end items-end rounded-lg">
+          <button class="font-serif text-xl text-gray-700 bg-white px-6 py-1 rounded-md mb-3 mt-3 mr-3 btn__modal__currentAccount">
+            Canel
+        </button>
+      </div>
+    </div>
+</div>
+
+
+    <!--               Header finished                 -->
+
+    <!--               Hidden Part App                -->
+    <main class="mt-24 containerApp hidden">
+      <!--             Mother Of Text (Current, Date) and amount Number   -->
+      <div class="flex justify-between px-40">
+        <!--           Mother Text (Current, Date)            -->
+        <div class="flex-col">
+          <!--       Text current     -->
+          <p class="text-black font-bold text-3xl">Current balance</p>
+          <!--       Text date        -->
+          <p class="font-semibold text-slate-500 date">As of 05/03/2037</p>
+        </div>
+        <!--           amount Number                 -->
+        <p class="text-5xl font-bold text-black balance__vlaue">
+          0000<span>$</span>
+        </p>
+      </div>
+
+      <!--             Grid Pages         -->
+      <div class="grid grid-cols-3 gap-4 px-44 mt-10">
+        <!--           Left Pages         -->
+        <div
+          class="col-span-2 bg-white rounded-xl relative overflow-auto scroll-smooth"
+          style="height: 502px"
+          data-twe-spy="scroll"
+          data-twe-target="#scrollspy-smooth"
+          data-twe-offset="0"
+        >
+          <!--         Movements All           -->
+          <div class="movements">
+            <!--         Line1 Mother      -->
+            <div class="movements__row movements__type__deposit">
+              <div class="flex justify-between px-14 mt-6">
+                <!--       Deposit Text Circle and Time Text Mother        -->
+                <div class="flex gap-6">
+                  <!--     Deposit Text Circle      -->
+                  <div
+                    class="text-md font-semibold text-white bg-green-500 rounded-xl px-4 py-1"
+                  >
+                    <span>2</span> Deposit
+                  </div>
+                  <!--     Time Text          -->
+                  <p class="text-slate-500 font-semibold text-md">3 Days ago</p>
+                </div>
+                <!--       amount Number      -->
+                <p class="text-2xl font-bold text-slate-500 index__p__movementAmount">4 000$</p>
+              </div>
+              <!--         The dividing Line-->
+              <div class="w-full h-1 bg-slate-100 mt-6"></div>
+            </div>
+
+            <!--         Line2 Mother      -->
+            <div class="movements__row movements__type__withdrawal">
+              <div class="flex justify-between px-14 mt-6">
+                <!--       Deposit Text Circle and Time Text Mother        -->
+                <div class="flex gap-6">
+                  <!--     Deposit Text Circle      -->
+                  <div
+                    class="text-md font-semibold text-white bg-red-500 rounded-xl px-4 py-1"
+                  >
+                    <span>2</span> Withdrawal
+                  </div>
+                  <!--     Time Text          -->
+                  <p class="text-slate-500 font-semibold text-md">3 Days ago</p>
+                </div>
+                <!--       amount Number      -->
+                <p class="text-2xl font-bold text-slate-500 index__p__movementAmount">4 000$</p>
+              </div>
+              <!--         The dividing Line-->
+              <div class="w-full h-1 bg-slate-100 mt-6"></div>
+            </div>
+          </div>
+        </div>
+        <!--           Right Pages-->
+        <div class="col-span-1">
+          <!--         Mother of 3 Boxes   -->
+          <div class="flex-col bg-slate-200">
+            <!--       Box Yellow        -->
+            <div
+              class="bg-gradient-to-tl from-yellow-300 to-yellow-500 px-12 flex items-center justify-center rounded-xl"
+            >
+              <!--     Mother All Box Element-->
+              <div class="flex-col">
+                <!--     Tranfer Money Text   -->
+                <p class="text-2xl font-semibold text-gray-700 mt-6">
+                  Tranfer Money
+                </p>
+                <!--  Mother Of 3 Elements-->
+                <form class="flex gap-2 mt-6">
+                  <input
+                    class="text-black text-center placeholder:slate-400 text-lg bg-slate-100/40 w-28 rounded-md focus:outline-none form__input__transferTo"
+                    type="text"
+                  />
+                  <input
+                    class="text-black text-center placeholder:slate-400 text-lg bg-slate-100/40 w-28 rounded-md focus:outline-none form__input__amountTransfer"
+                    type="text"
+                  />
+                  <!--     Icon                 -->
+                  <button class="bg-white rounded-md btn__transfer">
+                    <img
+                      class="px-1 py-1"
+                      src="/public/ArrowIcon.png"
+                      alt="arrow "
+                    />
+                  </button>
+                </form>
+                <!--   Mother of Transfer to and Amount text-->
+                <div class="flex gap-10 mt-2 mb-3">
+                  <p class="text-slate-600 font-bold">Transfer To</p>
+                  <p class="text-slate-600 font-bold">Amount</p>
+                </div>
+              </div>
+            </div>
+            <!--       Box Green        -->
+
+            <div
+              class="bg-gradient-to-tl from-green-500 to-green-700 px-12 flex items-center justify-center mt-2 rounded-xl pr-44"
+            >
+              <!--     Mother All Box Element-->
+              <div class="flex-col">
+                <!--     Request Loan Text   -->
+                <p class="text-2xl font-semibold text-gray-700 mt-6">
+                  Request Loan
+                </p>
+                <!--  Mother Of 2 Elements-->
+                <form class="flex gap-2 mt-6">
+                  <input
+                    class="text-black text-center placeholder:slate-400 text-lg bg-slate-100/40 w-28 rounded-md focus:outline-none input__loanRequest"
+                    type="text"
+                  />
+                  <!--     Icon                 -->
+                  <button class="bg-white rounded-md btn__requestLoan">
+                    <img
+                      class="px-1 py-1"
+                      src="/public/ArrowIcon.png"
+                      alt="arrow "
+                    />
+                  </button>
+                </form>
+                <!--    Amount text-->
+                <p class="text-slate-600 font-bold mt-2 mb-3">Amount</p>
+              </div>
+            </div>
+
+            <!--       Box Red        -->
+
+            <div
+              class="bg-gradient-to-tl from-rose-500 to-red-600 px-12 flex items-center justify-center mt-2 rounded-xl"
+            >
+              <!--     Mother All Box Element-->
+              <div class="flex-col">
+                <!--     Close Account Text   -->
+                <p class="text-2xl font-semibold text-black mt-6">
+                  Close Account
+                </p>
+                <!--  Mother Of 3 Elements-->
+                <form class="flex gap-2 mt-6">
+                  <input
+                    class="text-black text-center placeholder:slate-400 text-lg bg-slate-100/40 w-28 rounded-md focus:outline-none inputUser__closeAccount"
+                    type="text"
+                  />
+                  <input
+                    class="text-black text-center placeholder:slate-400 text-lg bg-slate-100/40 w-28 rounded-md focus:outline-none inputPin__closeAccount"
+                    type="text"
+                  />
+                  <!--     Close button                 -->
+                  <button class="bg-white rounded-md btn__closeAccount">
+                    <img
+                      class="px-1 py-1"
+                      src="/public/ArrowIcon.png"
+                      alt="arrow "
+                    />
+                  </button>
+                </form>
+                <!--   Mother of Transfer to and Amount text-->
+                <div class="flex gap-x-24 mt-2 mb-3">
+                  <p class="text-black font-bold">User</p>
+                  <p class="text-black font-bold">Pin</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--              Bottom of Grid                -->
+      <div class="flex justify-around  gap-64 mt-12">
+        <!--            Left Side            -->
+        <div class="flex gap-10 pl-40">
+          <!--Text IN-->
+          <div class="flex gap-2">
+            <p
+              class="text-black font-bold text-xs flex items-center justify-center"
+            >
+              IN
+            </p>
+            <p class="text-3xl font-bold text-green-500 summary__valueIn">0000</p>
+          </div>
+          <!--Text Out-->
+          <div class="flex gap-2">
+            <p
+              class="text-black font-bold text-xs flex items-center justify-center"
+            >
+              Out
+            </p>
+            <p class="text-3xl font-bold text-rose-500 summary__valueOut">0000</p>
+          </div>
+          <!--Text Insert-->
+          <div class="flex gap-2">
+            <p
+              class="text-black font-bold text-xs flex items-center justify-center "
+            >
+              Inserts
+            </p>
+            <p class="text-3xl font-bold text-green-500 summary__valueInsert">0000</p>
+          </div>
+          <!--Icon Sort-->
+          <div>
+            <button class="relative text-black font-bold text-md mt-4 index__button__sort">
+            <div class="absolute -top-2 left-3">
+              <img
+                class="w-4 h-4"
+                src="./public/arrowBottom.png"
+                alt="download"
+              />
+            </div>
+            SORT
+          </button>
+          </div></div>
+        <!--            Right Side            -->
+        <div class="flex gap-1">
+          <!--      Text you will be loged out      -->
+          <p class="text-md font-semibold text-slate-600 ">You will be loged out : </p>
+          <!--    Time Loged Out      -->
+          <div class="text-black font-semibold timeLogedOut">05:00</div>
+        </div> 
+      <div>
+    </main>
+    <script type="module" src="/src/js/app.js"></script>
+  </body>
+</html> 
